@@ -1,36 +1,27 @@
 package com.example.jetpack_compose
 
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFrom
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.jetpack_compose.ui.theme.JetpackcomposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +31,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackcomposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
+                    DiscoBar(
                         name = "Zubair Jamil",
                         cgpa = 3.24,
                         modifier = Modifier.padding(innerPadding)
@@ -51,30 +42,34 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+val colors = listOf(
+    Color.Red,
+    Color.Blue,
+    Color.LightGray,
+    Color.Green,
+    Color.Magenta,
+    Color.Cyan,
+    Color.Yellow
+)
+
 @Composable
-fun Greeting(name: String, cgpa: Number, modifier: Modifier) {
+fun DiscoBar(name: String, cgpa: Number, modifier: Modifier) {
+    var color = remember { mutableStateOf(Color.Red) }
+
     Column(
-        modifier = Modifier.padding(32.dp)
-
+        modifier = Modifier
+            .background(color.value)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.img),
-            contentDescription = "Portrait picture of zubair jamil",
-            modifier = modifier.size(200.dp).clip(CircleShape).align(Alignment.CenterHorizontally)
-        )
-        Text(
-            text = "$name \uD83D\uDC4B",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = modifier.fillMaxWidth()
-
-        )
-        Text(
-            text = "I'm still hoping around ${cgpa.toString()} CGPA",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Button(
+            onClick = {
+                color.value = colors.random()
+            }
+        ) {
+            Text(text = "Do some magic")
+        }
     }
 }
 
@@ -82,7 +77,7 @@ fun Greeting(name: String, cgpa: Number, modifier: Modifier) {
 @Composable
 fun GreetingPreview() {
     JetpackcomposeTheme {
-        Greeting("Zubair Jamil", 3.24, Modifier.padding(PaddingValues(16.dp)))
+        DiscoBar("Zubair Jamil", 3.24, Modifier.padding(PaddingValues(16.dp)))
 
     }
 }
